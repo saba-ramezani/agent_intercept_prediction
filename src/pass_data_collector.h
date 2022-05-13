@@ -21,7 +21,7 @@ struct data{
     double i_ball_x, i_ball_y;
     double i_ball_speed;
     double i_ball_vel_angle;
-    double i_ball_polar_r, i_ball_polar_theta;
+    double i_ball_r, i_ball_t;
     double i_pass_origin_x, i_pass_origin_y;
     double i_ball_dist_to_origin;
     double i_expected_receive_position_x;
@@ -29,13 +29,28 @@ struct data{
     //receiver
     double i_receiver_x, i_receiver_y;
     int i_receiver_unum;
-    double i_receiver_polar_r, i_receiver_polar_theta;
+    double i_receiver_r, i_receiver_t;
     //receiver position relative to ball
     double i_receiver_relative_to_ball_x, i_receiver_relative_to_ball_y;
-    double i_receiver_relative_to_ball_polar_r, i_receiver_relative_to_ball_polar_theta;
+    double i_receiver_relative_to_ball_r, i_receiver_relative_to_ball_t;
     //players
+    int i_players_unum[11];
+    bool i_players_is_tackling[11];
+    double i_players_vel_x[11];
+    double i_players_vel_y[11];
+    double i_players_vel_r[11];
+    double i_players_vel_t[11];
+    double i_players_body[11];
+    double i_players_neck[11];
     double i_players_x[11];
     double i_players_y[11];
+    double i_player_type_kickable_area[11];
+    double i_player_type_size[11];
+    double i_player_type_dash_rate[11];
+    double i_player_type_effort_max[11];
+    double i_player_type_effort_min[11];
+    double i_player_type_speed_max[11];
+
     //output
     double o_receive_position_x, o_receive_position_y;
     double o_pass_distance;

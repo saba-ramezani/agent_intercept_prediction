@@ -123,8 +123,8 @@ Pass_Data_Collector::insert_inputs(const WorldModel &wm , struct data &cycle_dat
     cycle_data.i_ball_y = ball_position.y;
     cycle_data.i_ball_speed = wm.ball().vel().r();
     cycle_data.i_ball_vel_angle = wm.ball().vel().th().degree();
-    cycle_data.i_ball_polar_r = ball_position.r();
-    cycle_data.i_ball_polar_theta = ball_position.th().degree();
+    cycle_data.i_ball_r = ball_position.r();
+    cycle_data.i_ball_t = ball_position.th().degree();
     Vector2D pass_origin ;
     if (pass_data.empty()) //it means that we are at the cycle that the pass begins in
     {
@@ -146,13 +146,13 @@ Pass_Data_Collector::insert_inputs(const WorldModel &wm , struct data &cycle_dat
     cycle_data.i_receiver_x = receiver->pos().x;
     cycle_data.i_receiver_y = receiver->pos().y;
     cycle_data.i_receiver_unum = receiver->unum();
-    cycle_data.i_receiver_polar_r = receiver->pos().r();
-    cycle_data.i_receiver_polar_theta = receiver->pos().th().degree();
+    cycle_data.i_receiver_r = receiver->pos().r();
+    cycle_data.i_receiver_t = receiver->pos().th().degree();
     Vector2D receiver_relative_to_ball(receiver->pos().x - ball_position.x , receiver->pos().y - ball_position.y);
     cycle_data.i_receiver_relative_to_ball_x = receiver_relative_to_ball.x;
     cycle_data.i_receiver_relative_to_ball_y = receiver_relative_to_ball.y;
-    cycle_data.i_receiver_relative_to_ball_polar_r = receiver_relative_to_ball.r();
-    cycle_data.i_receiver_relative_to_ball_polar_theta = receiver_relative_to_ball.th().degree();
+    cycle_data.i_receiver_relative_to_ball_r = receiver_relative_to_ball.r();
+    cycle_data.i_receiver_relative_to_ball_t = receiver_relative_to_ball.th().degree();
     for (int i=1 ; i<12 ; i++)
     {
 //        if (wm.theirPlayer(i) == NULL) {
@@ -163,6 +163,7 @@ Pass_Data_Collector::insert_inputs(const WorldModel &wm , struct data &cycle_dat
         Vector2D opponent_pos = wm.theirPlayer(i)->pos();
         cycle_data.i_players_x[i-1] = opponent_pos.x;
         cycle_data.i_players_y[i-1] = opponent_pos.y;
+
     }
 }
 
@@ -184,22 +185,22 @@ Pass_Data_Collector::set_column_names_of_csv_file() {
     std::time_t result = std::time(nullptr);
     std::string time = std::asctime(std::localtime(&result));
     int randomNum = rand();
-    csv_file_name = "pass_log_" + time + "_" + randomNum + ".csv";
+    csv_file_name = "intercept_data/pass_log_" + time + "_" + std::to_string(randomNum) + ".csv";
     //csv_file_name = "pass_log.csv";
     std::ofstream myFile(csv_file_name);
     //setting column names
     myFile << "cycle" << ",";
     myFile << "i_ball_x" << "," << "i_ball_y" << ",";
     myFile << "i_ball_speed" << "," << "i_ball_vel_angle" << ",";
-    myFile << "i_ball_polar_r" << "," << "i_ball_polar_theta" << ",";
+    myFile << "i_ball_r" << "," << "i_ball_t" << ",";
     myFile << "i_pass_origin_x" << "," << "i_pass_origin_y" << ",";
     myFile << "i_ball_dist_to_origin" << ",";
     myFile << "i_expected_receive_position_x" << "," << "i_expected_receive_position_y" << ",";
     myFile << "i_receiver_x" << "," << "i_receiver_y" << ",";
     myFile << "i_receiver_unum" << ",";
-    myFile << "i_receiver_polar_r" << "," << "i_receiver_polar_theta" << ",";
+    myFile << "i_receiver_r" << "," << "i_receiver_t" << ",";
     myFile << "i_receiver_relative_to_ball_x" << "," << "i_receiver_relative_to_ball_y" << ",";
-    myFile << "i_receiver_relative_to_ball_polar_r" << "," << "i_receiver_relative_to_ball_polar_theta" << ",";
+    myFile << "i_receiver_relative_to_ball_r" << "," << "i_receiver_relative_to_ball_t" << ",";
     for (int i=1 ; i<12 ; i++) {
         myFile << "i_player_" << i << "_x" << "," << "i_player_" << i << "_y" << "," ;
     }
@@ -219,15 +220,15 @@ Pass_Data_Collector::write_to_file() {
         myFile << dataToWrite.cycle << ",";
         myFile << dataToWrite.i_ball_x << "," << dataToWrite.i_ball_y << ",";
         myFile << dataToWrite.i_ball_speed << "," << dataToWrite.i_ball_vel_angle << ",";
-        myFile << dataToWrite.i_ball_polar_r << "," << dataToWrite.i_ball_polar_theta << ",";
+        myFile << dataToWrite.i_ball_r << "," << dataToWrite.i_ball_t << ",";
         myFile << dataToWrite.i_pass_origin_x << "," << dataToWrite.i_pass_origin_y << ",";
         myFile << dataToWrite.i_ball_dist_to_origin << ",";
         myFile << dataToWrite.i_expected_receive_position_x << "," << dataToWrite.i_expected_receive_position_y << ",";
         myFile << dataToWrite.i_receiver_x << "," << dataToWrite.i_receiver_y << ",";
         myFile << dataToWrite.i_receiver_unum << ",";
-        myFile << dataToWrite.i_receiver_polar_r << "," << dataToWrite.i_receiver_polar_theta << ",";
+        myFile << dataToWrite.i_receiver_r << "," << dataToWrite.i_receiver_t << ",";
         myFile << dataToWrite.i_receiver_relative_to_ball_x << "," << dataToWrite.i_receiver_relative_to_ball_y << ",";
-        myFile << dataToWrite.i_receiver_relative_to_ball_polar_r << "," << dataToWrite.i_receiver_relative_to_ball_polar_theta << ",";
+        myFile << dataToWrite.i_receiver_relative_to_ball_r << "," << dataToWrite.i_receiver_relative_to_ball_t << ",";
         for (int j=1 ; j<12 ; j++) {
             myFile << dataToWrite.i_players_x[j-1] << "," << dataToWrite.i_players_y[j-1] << "," ;
         }
